@@ -1,24 +1,7 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Le site du gossip project mis en forme de manière dynamique avec Rails !
+Après téléchargement et dézippage : 
+* Faire les migrations de bases de données ``rails db:migrate``
+* Seed la base de données ``rails db:seed``
+* Ouvrir le navigateur sur localhost:3000
