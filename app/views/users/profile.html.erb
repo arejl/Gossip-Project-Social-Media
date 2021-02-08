@@ -1,0 +1,6 @@
+<h2>Profil de <%= @user.first_name%> <%= @user.last_name%></h2>
+<p>Créé le <%=@user.created_at.strftime("%d/%m/%Y à %H:%M")%>
+  <br/>Age : <%= @user.age%> ans
+  <br/>Ville : <%= @user.city.city_name%>
+  <br/> Description : <%= @user.description%>
+</p>
