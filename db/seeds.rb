@@ -1,4 +1,4 @@
-require 'faker'
+require "faker"
 
 User.destroy_all
 Gossip.destroy_all
@@ -11,7 +11,7 @@ Like.destroy_all
 10.times do
   City.create!(
     city_name: Faker::Address.city,
-    zip_code: Faker::Address.zip_code
+    zip_code: Faker::Address.zip_code,
   )
 end
 
@@ -22,7 +22,7 @@ end
     description: Faker::TvShows::RuPaul.quote,
     email: Faker::Internet.free_email,
     age: rand(15..80),
-    city_id: City.all.sample.id
+    city_id: City.all.sample.id,
   )
 end
 
@@ -30,7 +30,7 @@ end
   #Le message est créé avec un expéditeur et un contenu.
   new_message = PrivateMessage.create!(
     content: Faker::Quote.yoda,
-    sender_id: User.all.sample.id
+    sender_id: User.all.sample.id,
   )
   #On rajoute des destinataires, entre 1 et 5.
   new_message.recipients << User.all.sample(rand(1..5))
@@ -38,15 +38,15 @@ end
 
 10.times do
   Tag.create!(
-    title: Faker::Hipster.word
+    title: Faker::Hipster.word,
   )
 end
 
 20.times do
   new_gossip = Gossip.create!(
-    title: Faker::TvShows::MichaelScott.quote,
-    content: Faker::Lorem.paragraph(sentence_count: 3),
-    user_id: User.all.sample.id
+    title: Faker::Lorem.characters(number: 10),
+    content: Faker::Lorem.paragraph(sentence_count: 30),
+    user_id: User.all.sample.id,
   )
   new_gossip.tags << Tag.all.sample(rand(1..10))
 end
@@ -55,13 +55,13 @@ end
   new_comment = Comment.create!(
     content: Faker::ChuckNorris.fact,
     gossip_id: Gossip.all.sample.id,
-    user_id: User.all.sample.id
+    user_id: User.all.sample.id,
   )
   #Ajout des commentaires de commentaires
   rand(0..5).times do
     new_comment.comments << Comment.create!(
       content: Faker::Quotes::Chiquito.sentence,
-      user_id: User.all.sample.id
+      user_id: User.all.sample.id,
     )
   end
 end
@@ -73,12 +73,21 @@ end
   if is_like == 0
     Like.create!(
       user_id: liking_user,
-      gossip_id: Gossip.all.sample.id
+      gossip_id: Gossip.all.sample.id,
     )
   else
     Like.create!(
       user_id: liking_user,
-      comment_id: Comment.all.sample.id
+      comment_id: Comment.all.sample.id,
     )
   end
 end
+
+User.create!(
+  first_name: "anonymous",
+  last_name: "user",
+  description: "Cet utilisateur est anonyme",
+  email: Faker::Internet.free_email,
+  age: rand(15..80),
+  city_id: City.all.sample.id,
+)

@@ -16,12 +16,10 @@
 
 * {
   color: rgb(58, 57, 57);
+  font-family: 'Poppins', sans-serif;
 }
-
- h1 {
-   text-align: center;
- }
 
  p {
    text-align: justify ;
+   line-height: 2rem;
  }

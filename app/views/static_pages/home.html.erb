@@ -2,19 +2,34 @@
   <head>
   </head>
   <body>
-    <h1>Bienvenue sur le best site de gossip ever !</h1>
-    <h3 class='text-center'>Jeremstar en PLS</h3>
-    <p>Voici la liste de tous nos gossips:</p>
-    <div class="d-flex flex-wrap justify-content-center">
-      <% @all_gossips.each_with_index do |gossip, index| %>
+    <div class="jumbotron" style="height:100vh; background-image: url('https://wallpapershome.com/images/pages/pic_h/21581.jpg'); background-size:cover">
+        <div class="inner text-right p-5">
+          <h1><strong  class="text-light">Bienvenue sur le best site de gossip ever !</strong></h1>
+          <h2 class="text-light">Jeremstar en PLS</h2>
+          <%=link_to "Ajouter un gossip", new_gossip_path, class: "btn btn-primary py-2 my-2" %>
+          <%=link_to "Voir la liste des gossips", {anchor: "gossip-list"}, class: "btn btn-secondary py-2 my-2" %>
+        </div>
+    </div>
+    <div id="gossip-list" class="d-flex flex-wrap justify-content-center">
+      <% @all_gossips.order("created_at DESC").each_with_index do |gossip, index| %>
         <div class="card my-2 mx-4" style="width: 18rem;">
           <div class="card-header">
-            Gossip numéro <%=index + 1%>
+            Gossip numéro <%= index + 1 %>
           </div>
           <div class="card-body">
-            <h5 class="card-title">Titre : <%= gossip.title%></h5>
-            <p class="card-text">Ecrit par <%=gossip.user.first_name%></p>
-            <%=link_to "En voir plus", "gossips/#{gossip.id}", class:"btn btn-secondary" %>
+            <h5 class="card-title">Titre : <%= gossip.title %></h5>
+            <p class="card-text">Ecrit par <%= gossip.user.first_name %></p>
+            <%= link_to "En voir plus", gossip_path(id:gossip.id), class: "btn btn-secondary" %>
+          </div>
+          <div class="card-footer text-right">
+            <%case gossip.comments.count%>
+              <%when 0%>
+                Pas encore de commentaires
+              <%when 1%>
+                <%= gossip.comments.count %> commentaire
+              <%else%>
+                <%= gossip.comments.count %> commentaires
+            <%end%>
           </div>
         </div>
       <% end %>

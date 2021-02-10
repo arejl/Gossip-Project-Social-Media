@@ -1,6 +1,0 @@
-<h1>Gossip numéro <%=params[:id].to_i + 1%></h1>
-<p> Créé le <%=@gossip_id.created_at.strftime("%d/%m/%Y à %H:%M")%>
-  <br/>Auteur : <%= link_to "#{@gossip_id.user.first_name} #{@gossip_id.user.last_name}", "/users/#{@gossip_id.user.id}"%>
-  <br/>Titre : <%= @gossip_id.title%>
-  <br/>Contenu : <%= @gossip_id.content%>
-</p>

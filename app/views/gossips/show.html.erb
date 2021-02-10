@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <h1>Gossip numéro <%=params[:id].to_i%></h1>
+      <p> Créé le <%=@gossip_id.created_at.strftime("%d/%m/%Y à %H:%M")%>
+        <br/>Auteur : <%=@gossip_id.user.first_name%> <%=@gossip_id.user.last_name%> &#8212;
+          <%= link_to "Voir son profil", user_path(id:@gossip_id.user.id)%>
+        <br/>Tags : <%@gossip_id.tags.each do |tag|%>
+          <span class="badge badge-success"><%=tag.title%></span>
+          <%end%>
+        <br/>Titre : <%= @gossip_id.title%>
+        <br/>Contenu : <%= @gossip_id.content%>
+        <br/><%= link_to "Editer ce potin", edit_gossip_path(id:@gossip_id.id), class: "btn btn-primary py-2 my-2"%>
+        <%= link_to "Détruire ce potin", gossip_path(id:@gossip_id.id), method: :delete, data: { confirm: 'Êtes-vous sûr.e ?' }, class: "btn btn-danger py-2 my-2"%>
+      </p>
+      <h5>Ajouter un commentaire</h5>
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
+      <form action= <%= gossip_comments_path(gossip_id:@gossip_id.id) %> method="POST">
+        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %> >
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Votre commentaire</label>
+            <textarea class="form-control" name="comment_content" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Valider</button>
+      </form>
+      <h5 class="pt-2"><%= @gossip_id.comments.count%> commentaires</h5>
+      <% @gossip_id.comments.order("created_at DESC").each_with_index do |comment, index| %>
+        <blockquote>
+          <p><%= index + 1%>. <%=comment.content%></p>
+          <footer class="blockquote-footer"><%=comment.user.first_name%> <%=comment.user.last_name%>, le <%=comment.created_at.strftime("%d/%m/%Y à %H:%M")%></footer>
+          <div class="text-right">
+            <%= link_to "Modifier ce commentaire", edit_gossip_comment_path(gossip_id:@gossip_id.id, id:comment.id), class: "btn btn-secondary py-2 my-2"%>
+          </div>
+        </blockquote>
+      <% end %>
+    </div>
+  </div>
+</div>

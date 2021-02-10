@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <h1>Profil de <%= @user.first_name%> <%= @user.last_name%></h1>
+      <p>Créé le <%=@user.created_at.strftime("%d/%m/%Y à %H:%M")%>
+        <br/>Age : <%= @user.age%> ans
+        <br/>Email : <%= @user.email%>
+        <br/>Ville : <%= @user.city.city_name%> &#8212; 
+          <%= link_to "Plus d'infos sur cette ville", city_path(id:@user.city.id)%>
+        <br/> Description : <%= @user.description%>
+      </p>
+      <h5>Les gossips publiés par <%= @user.first_name%> :</h5>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-10 mx-auto d-flex flex-wrap justify-content-center">
+      <% @user.gossips.each do |gossip| %>
+          <div class="card my-2 mx-4" style="width: 18rem;">
+            <div class="card-header">
+                Gossip numéro <%= gossip.id %>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Titre : <%= gossip.title %></h5>
+                <p class="card-text">Ecrit par <%= gossip.user.first_name %></p>
+                <%= link_to "En voir plus", gossip_path(id:gossip.id), class: "btn btn-secondary" %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
