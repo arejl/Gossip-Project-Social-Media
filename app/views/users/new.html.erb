@@ -1,0 +1,38 @@
+<div class="container pt-4">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <h2>Créer un compte</h2>
+        <% if @user.errors.any? %>
+            <div class="alert alert-danger text-center" role="alert">
+                <p>Nous n'avons pas réussi à créer de compte pour la (ou les) raison(s) suivante(s) :</p>
+                <ul>
+                    <% @user.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+        <%= form_tag url_for(action: 'create'), method: "post" do %>
+            <%= label_tag 'Votre prénom :'%>
+            <%= text_field_tag :first_name, nil, class: "w-100" %>
+            <br /><br />
+            <%= label_tag 'Votre nom :'%>
+            <%= text_field_tag :last_name, nil, class: "w-100" %>
+            <br /><br />
+            <%= label_tag "D'où venez-vous ?"%>
+            <%= text_field_tag :city_name, nil, class: "w-100" %>
+            <br /><br />
+            <%= label_tag 'Votre e-mail :'%>
+            <%= text_field_tag :email, nil, class: "w-100" %>
+            <br /><br />
+            <%= label_tag 'Votre mot de passe (minimum 6 caractères)' %>
+            <%= password_field_tag :password, nil, class: "w-100" %>
+            <br /> <br />
+            <%= label_tag 'Confirmez votre mot de passe' %>
+            <%= password_field_tag :password_confirmation, nil, class: "w-100" %>
+            <br /> <br />
+            <%= submit_tag "Valider", class: "btn btn-primary"  %>
+        <% end %>
+    </div>
+  </div>
+</div>

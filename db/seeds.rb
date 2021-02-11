@@ -23,6 +23,7 @@ end
     email: Faker::Internet.free_email,
     age: rand(15..80),
     city_id: City.all.sample.id,
+    password: Faker::Lorem.characters(number: 10)
   )
 end
 
@@ -90,4 +91,5 @@ User.create!(
   email: Faker::Internet.free_email,
   age: rand(15..80),
   city_id: City.all.sample.id,
+  password:"motdepasse"
 )
