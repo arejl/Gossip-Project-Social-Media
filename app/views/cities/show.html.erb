@@ -15,18 +15,18 @@
   </div>
 
   <div class="row">  
-    <div class="col-md-10 mx-auto d-flex flex-wrap justify-content-center">
+    <div class="col-md-20 mx-auto d-flex flex-wrap justify-content-center">
       <% inhabitants(@city).each do |user| %>
         <% user.gossips.each do |gossip| %>
           <div class="card my-2 mx-4" style="width: 18rem;">
             <div class="card-header">
-              Titre : <%= gossip.title %>
+              Ecrit par <%= gossip.user.first_name %>
             </div>
             <div class="card-body">
-              <h5 class="card-title">Ecrit par <%= gossip.user.first_name %></h5>
+              <h5 class="card-title">Titre : <%= gossip.title %></h5>
               <div class="d-flex align-items-center justify-content-center pt-2">
                 <%= link_to "En voir plus", gossip_path(id:gossip.id), class: "btn btn-secondary" %>
-                <%if gossip.likes.find_by(user_id:current_user.id) == nil%>
+                <%if !logged_in? || gossip.likes.find_by(user_id:current_user.id) == nil%>
                   <form action= <%= likes_path %> method="POST" class="form-inline">
                     <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %> >
                     <input type="hidden" name="gossip_id" value="<%=gossip.id%>">

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     @user = User.new(
       first_name:params[:first_name],
       last_name:params[:last_name], 
-      ge:params[:age].to_i,
+      age:params[:age].to_i,
       description:params[:description],
       email:params[:email],
       password:params[:password],

@@ -24,7 +24,7 @@
         </div>
         <div class="d-flex align-items-center">
           <span><%=@gossip_id.likes.count%> likes</span>
-          <%if @gossip_id.likes.find_by(user_id:current_user.id) == nil%>
+          <%if !logged_in? || @gossip_id.likes.find_by(user_id:current_user.id) == nil%>
             <form action= <%= likes_path %> method="POST" class="form-inline">
               <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %> >
               <input type="hidden" name="gossip_id" value="<%=@gossip_id.id%>">
