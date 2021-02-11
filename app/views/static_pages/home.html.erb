@@ -32,15 +32,7 @@
             </div>
           </div>
           <div class="card-footer text-right">
-            <%case gossip.comments.count%>
-              <%when 0%>
-                Pas encore de commentaires
-              <%when 1%>
-                <%= gossip.comments.count %> commentaire
-              <%else%>
-                <%= gossip.comments.count %> commentaires
-            <%end%>
-            <br/> <%= gossip.likes.count %> likes
+            <%= gossip.comments.count %> 💬 | <%= gossip.likes.count %> 👍              
           </div>
         </div>
       <% end %>
