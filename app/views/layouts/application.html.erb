@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -27,13 +28,13 @@
             <%= link_to "Contact", contact_path, class: "nav-item nav-link"%>
           </div>
           <div class="navbar-nav ml-auto">
-          <% if session[:user_id]==nil %>
-            <%= link_to "S'inscrire", new_user_path, class: "btn btn-secondary mx-1 my-1"%>
-            <%= link_to "Se connecter", new_session_path, class: "btn btn-primary mx-1 my-1"%>
-          <%else%>
-            <%= link_to "Voir mon profil", user_path(id:session[:user_id]), class: "btn btn-secondary mx-1 my-1"%>
-            <%= link_to "Se déconnecter", session_path(session.id), method: :delete, class: "btn btn-danger mx-1 my-1" %>
-          <%end%>
+            <% if !logged_in? %>
+              <%= link_to "S'inscrire", new_user_path, class: "btn btn-secondary mx-1 my-1"%>
+              <%= link_to "Se connecter", new_session_path, class: "btn btn-primary mx-1 my-1"%>
+            <%else%>
+              <%= link_to "Voir mon profil", user_path(id:session[:user_id]), class: "btn btn-secondary mx-1 my-1"%>
+              <%= link_to "Se déconnecter", session_path(session.id), method: :delete, class: "btn btn-danger mx-1 my-1" %>
+            <%end%>
           </div>
         </div>
       </nav>

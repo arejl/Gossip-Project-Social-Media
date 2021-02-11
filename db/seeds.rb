@@ -1,19 +1,32 @@
 require "faker"
 
+print "Destruction des données existantes..."
 User.destroy_all
+print "."
 Gossip.destroy_all
+print "."
 City.destroy_all
+print "."
 PrivateMessage.destroy_all
+print "."
 Comment.destroy_all
+print "."
 Tag.destroy_all
+print "."
 Like.destroy_all
+puts "."
+puts "Données existantes détruites"
+
+print "Création de nouvelles données..."
 
 10.times do
   City.create!(
-    city_name: Faker::Address.city,
+    city_name: Faker::Address.city.downcase,
     zip_code: Faker::Address.zip_code,
   )
 end
+
+print "."
 
 10.times do
   User.create!(
@@ -27,6 +40,8 @@ end
   )
 end
 
+print "."
+
 5.times do
   #Le message est créé avec un expéditeur et un contenu.
   new_message = PrivateMessage.create!(
@@ -37,11 +52,15 @@ end
   new_message.recipients << User.all.sample(rand(1..5))
 end
 
+print "."
+
 10.times do
   Tag.create!(
     title: Faker::Hipster.word,
   )
 end
+
+print "."
 
 20.times do
   new_gossip = Gossip.create!(
@@ -49,8 +68,10 @@ end
     content: Faker::Lorem.paragraph(sentence_count: 30),
     user_id: User.all.sample.id,
   )
-  new_gossip.tags << Tag.all.sample(rand(1..10))
+  new_gossip.tags << Tag.all.sample(rand(1..5))
 end
+
+print "."
 
 20.times do
   new_comment = Comment.create!(
@@ -66,6 +87,8 @@ end
     )
   end
 end
+
+print "."
 
 20.times do
   liking_user = User.all.sample.id
@@ -84,12 +107,18 @@ end
   end
 end
 
+puts "."
+
+puts "Création d'un utilisateur test en cours"
+
 User.create!(
   first_name: "anonymous",
   last_name: "user",
   description: "Cet utilisateur est anonyme",
-  email: Faker::Internet.free_email,
+  email: "test@test.com",
   age: rand(15..80),
   city_id: City.all.sample.id,
   password:"motdepasse"
 )
+
+puts "Seed terminé :)"

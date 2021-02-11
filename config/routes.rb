@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
   resources :users
   get 'welcome/:user_name', to: 'users#welcome'
-  resources :cities
-  resources :sessions
+  resources :cities, only: [:show]
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :likes, only: [:create, :destroy]
 end

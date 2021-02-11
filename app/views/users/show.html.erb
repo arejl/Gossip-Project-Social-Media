@@ -5,7 +5,7 @@
       <p>Créé le <%=@user.created_at.strftime("%d/%m/%Y à %H:%M")%>
         <br/>Age : <%= @user.age%> ans
         <br/>Email : <%= @user.email%>
-        <br/>Ville : <%= @user.city.city_name%> &#8212; 
+        <br/>Ville : <%= @user.city.city_name.split.map(&:capitalize).join(' ')%> &#8212; 
           <%= link_to "Plus d'infos sur cette ville", city_path(id:@user.city.id)%>
         <br/> Description : <%= @user.description%>
       </p>
@@ -17,22 +17,33 @@
       <% @user.gossips.each do |gossip| %>
           <div class="card my-2 mx-4" style="width: 18rem;">
             <div class="card-header">
-                Gossip numéro <%= gossip.id %>
+              Titre : <%= gossip.title %>
             </div>
             <div class="card-body">
-                <h5 class="card-title">Titre : <%= gossip.title %></h5>
-                <p class="card-text">Ecrit par <%= gossip.user.first_name %></p>
+              <h5 class="card-title">Ecrit par <%= gossip.user.first_name %></h5>
+              <div class="d-flex align-items-center justify-content-center pt-2">
                 <%= link_to "En voir plus", gossip_path(id:gossip.id), class: "btn btn-secondary" %>
+                <%if gossip.likes.find_by(user_id:current_user.id) == nil%>
+                  <form action= <%= likes_path %> method="POST" class="form-inline">
+                    <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %> >
+                    <input type="hidden" name="gossip_id" value="<%=gossip.id%>">
+                    <button type="submit" class="btn btn-success mx-2"> 👍 Like </button>
+                  </form>
+                <%else%>
+                  <%= link_to "👎 Unlike", like_path(id:gossip.likes.where(user_id:current_user.id, gossip_id:gossip.id).first), method: :delete, class: "btn btn-danger mx-2"%>
+                <%end%>
+              </div>
             </div>
             <div class="card-footer text-right">
-            <%case gossip.comments.count%>
-              <%when 0%>
-                Pas encore de commentaires
-              <%when 1%>
-                <%= gossip.comments.count %> commentaire
-              <%else%>
-                <%= gossip.comments.count %> commentaires
+              <%case gossip.comments.count%>
+                <%when 0%>
+                  Pas encore de commentaires
+                <%when 1%>
+                  <%= gossip.comments.count %> commentaire
+                <%else%>
+                  <%= gossip.comments.count %> commentaires
               <%end%>
+              <br/> <%= gossip.likes.count %> likes
             </div>
           </div>
       <% end %>

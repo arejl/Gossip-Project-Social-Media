@@ -1,6 +1,6 @@
 class GossipsController < ApplicationController
   def create
-    @user = User.find(session[:user_id])
+    @user = current_user
     @all_tags = Tag.all
     @gossip = Gossip.new(title:params[:title], content:params[:content], user_id:@user.id)
     if @gossip.save
@@ -27,11 +27,10 @@ class GossipsController < ApplicationController
   end
 
   def new
-    if session[:user_id]==nil
+    if logged_in? == false
       redirect_to new_session_path
     else
-      id = session[:user_id]
-      @user = User.find(id)
+      @user = current_user
       @gossip = Gossip.new
       @all_tags = Tag.all
     end
@@ -56,10 +55,5 @@ class GossipsController < ApplicationController
 
   def show
     @gossip_id = Gossip.find(params[:id].to_i)
-  end
-
-  private
-  
-  def define_tags
   end
 end

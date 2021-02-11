@@ -2,6 +2,8 @@
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
       <h1>Gossip numéro <%=params[:id].to_i%></h1>
+
+      <%# Affichage du Gossip %>
       <p> Créé le <%=@gossip_id.created_at.strftime("%d/%m/%Y à %H:%M")%>
         <br/>Auteur : <%=@gossip_id.user.first_name%> <%=@gossip_id.user.last_name%> &#8212;
           <%= link_to "Voir son profil", user_path(id:@gossip_id.user.id)%>
@@ -10,16 +12,38 @@
           <%end%>
         <br/>Titre : <%= @gossip_id.title%>
         <br/>Contenu : <%= @gossip_id.content%>
-        <br/><% if session[:user_id]==@gossip_id.user.id %>
-          <%= link_to "Editer ce potin", edit_gossip_path(id:@gossip_id.id), class: "btn btn-primary py-2 my-2"%>
-          <%= link_to "Détruire ce potin", gossip_path(id:@gossip_id.id), method: :delete, data: { confirm: 'Êtes-vous sûr.e ?' }, class: "btn btn-danger py-2 my-2"%>
-        <%end%>
       </p>
+
+      <%# Options modifier/supprimer/like/unlike %>
+      <div class="d-flex align-items-center justify-content-between pb-3">
+        <div>
+          <% if has_permission(@gossip_id.user) %> 
+            <%= link_to "Editer ce potin", edit_gossip_path(id:@gossip_id.id), class: "btn btn-primary mx-2"%>
+            <%= link_to "Détruire ce potin", gossip_path(id:@gossip_id.id), method: :delete, data: { confirm: 'Êtes-vous sûr.e ?' }, class: "btn btn-danger mx-2"%>
+          <%end%> 
+        </div>
+        <div class="d-flex align-items-center">
+          <span><%=@gossip_id.likes.count%> likes</span>
+          <%if @gossip_id.likes.find_by(user_id:current_user.id) == nil%>
+            <form action= <%= likes_path %> method="POST" class="form-inline">
+              <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %> >
+              <input type="hidden" name="gossip_id" value="<%=@gossip_id.id%>">
+              <button type="submit" class="btn btn-success mx-2"> 👍 Like </button>
+            </form>
+          <%else%>
+            <%= link_to "👎 Unlike", like_path(id:@gossip_id.likes.where(user_id:current_user.id, gossip_id:@gossip_id.id).first), method: :delete, class: "btn btn-danger mx-2"%>
+          <%end%>
+        </div>
+      </div>
+
       <h5>Ajouter un commentaire</h5>
+
       <% flash.each do |key, value| %>
         <div class="alert alert-<%= key %>"><%= value %></div>
       <% end %>
-      <form action= <%= gossip_comments_path(gossip_id:@gossip_id.id) %> method="POST">
+
+      <%# Formulaire pour rajouter un commentaire %>
+      <form action= <%= gossip_comments_path(gossip_id:@gossip_id.id) %> method="POST" >
         <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %> >
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Votre commentaire</label>
@@ -27,18 +51,21 @@
         </div>
         <button type="submit" class="btn btn-primary">Valider</button>
       </form>
+
+      <%# Affichage des commentaires existants %>
       <h5 class="pt-2"><%= @gossip_id.comments.count%> commentaires</h5>
       <% @gossip_id.comments.order("created_at DESC").each_with_index do |comment, index| %>
         <blockquote>
           <p><%= index + 1%>. <%=comment.content%></p>
           <footer class="blockquote-footer"><%=comment.user.first_name%> <%=comment.user.last_name%>, le <%=comment.created_at.strftime("%d/%m/%Y à %H:%M")%></footer>
-          <% if session[:user_id]==comment.user.id %>
+          <% if has_permission(comment.user) %>
             <div class="text-right">
               <%= link_to "Modifier ce commentaire", edit_gossip_comment_path(gossip_id:@gossip_id.id, id:comment.id), class: "btn btn-secondary py-2 my-2"%>
             </div>
           <%end%>
         </blockquote>
       <% end %>
+
     </div>
   </div>
 </div>
