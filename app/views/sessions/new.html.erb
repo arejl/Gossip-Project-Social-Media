@@ -1,0 +1,19 @@
+<div class="container pt-4">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <h2>Se connecter</h2>
+        <% flash.each do |key, value| %>
+            <div class="alert alert-<%= key %>"><%= value %></div>
+        <% end %>
+        <%= form_tag url_for(action: 'create'), method: "post" do %>
+            <%= label_tag 'Votre email :'%>
+            <%= text_field_tag :email, nil, class: "w-100" %>
+            <br /><br />
+            <%= label_tag 'Votre mot de passe :' %>
+            <%= password_field_tag :password, nil, class: "w-100" %>
+            <br /> <br />
+            <%= submit_tag "Valider", class: "btn btn-primary"  %>
+        <% end %>
+    </div>
+  </div>
+</div>

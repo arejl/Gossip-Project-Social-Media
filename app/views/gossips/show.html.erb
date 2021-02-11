@@ -10,8 +10,10 @@
           <%end%>
         <br/>Titre : <%= @gossip_id.title%>
         <br/>Contenu : <%= @gossip_id.content%>
-        <br/><%= link_to "Editer ce potin", edit_gossip_path(id:@gossip_id.id), class: "btn btn-primary py-2 my-2"%>
-        <%= link_to "Détruire ce potin", gossip_path(id:@gossip_id.id), method: :delete, data: { confirm: 'Êtes-vous sûr.e ?' }, class: "btn btn-danger py-2 my-2"%>
+        <br/><% if session[:user_id]==@gossip_id.user.id %>
+          <%= link_to "Editer ce potin", edit_gossip_path(id:@gossip_id.id), class: "btn btn-primary py-2 my-2"%>
+          <%= link_to "Détruire ce potin", gossip_path(id:@gossip_id.id), method: :delete, data: { confirm: 'Êtes-vous sûr.e ?' }, class: "btn btn-danger py-2 my-2"%>
+        <%end%>
       </p>
       <h5>Ajouter un commentaire</h5>
       <% flash.each do |key, value| %>
@@ -30,9 +32,11 @@
         <blockquote>
           <p><%= index + 1%>. <%=comment.content%></p>
           <footer class="blockquote-footer"><%=comment.user.first_name%> <%=comment.user.last_name%>, le <%=comment.created_at.strftime("%d/%m/%Y à %H:%M")%></footer>
-          <div class="text-right">
-            <%= link_to "Modifier ce commentaire", edit_gossip_comment_path(gossip_id:@gossip_id.id, id:comment.id), class: "btn btn-secondary py-2 my-2"%>
-          </div>
+          <% if session[:user_id]==comment.user.id %>
+            <div class="text-right">
+              <%= link_to "Modifier ce commentaire", edit_gossip_comment_path(gossip_id:@gossip_id.id, id:comment.id), class: "btn btn-secondary py-2 my-2"%>
+            </div>
+          <%end%>
         </blockquote>
       <% end %>
     </div>

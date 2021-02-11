@@ -3,11 +3,11 @@ class UsersController < ApplicationController
     @user = User.new
   end
   def create
-    @user = User.new(first_name:params[:first_name], last_name:params[:last_name], email:params[:email], password:params[:password] )
-    if !City.find_by(city_name:params[:city_name].capitalize).nil?
-      @user.city = City.find_by(city_name:params[:city_name].capitalize)
+    @user = User.new(first_name:params[:first_name], last_name:params[:last_name], age:params[:age].to_i, description:params[:description], email:params[:email], password:params[:password], password_confirmation:params[:password_confirmation] )
+    if !City.find_by(city_name:params[:city_name]).nil?
+      @user.city = City.find_by(city_name:params[:city_name])
     else
-      @user.city = City.create(city_name:params[:city_name].capitalize)
+      @user.city = City.create(city_name:params[:city_name])
     end
     if @user.save
       redirect_to(root_path)

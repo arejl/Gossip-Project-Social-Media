@@ -17,14 +17,24 @@
         <% User.where(city_id:@city.id).each do |user| %>
             <% user.gossips.each do |gossip| %>
                 <div class="card my-2 mx-4" style="width: 18rem;">
-                <div class="card-header">
-                    Gossip numéro <%= gossip.id %>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Titre : <%= gossip.title %></h5>
-                    <p class="card-text">Ecrit par <%= gossip.user.first_name %></p>
-                    <%= link_to "En voir plus", gossip_path(id:gossip.id), class: "btn btn-secondary" %>
-                </div>
+                  <div class="card-header">
+                      Gossip numéro <%= gossip.id %>
+                  </div>
+                  <div class="card-body">
+                      <h5 class="card-title">Titre : <%= gossip.title %></h5>
+                      <p class="card-text">Ecrit par <%= gossip.user.first_name %></p>
+                      <%= link_to "En voir plus", gossip_path(id:gossip.id), class: "btn btn-secondary" %>
+                  </div>
+                  <div class="card-footer text-right">
+                    <%case gossip.comments.count%>
+                      <%when 0%>
+                        Pas encore de commentaires
+                      <%when 1%>
+                        <%= gossip.comments.count %> commentaire
+                      <%else%>
+                        <%= gossip.comments.count %> commentaires
+                    <%end%>
+                  </div>
                 </div>
             <% end %>
         <% end %>

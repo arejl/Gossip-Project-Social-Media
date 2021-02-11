@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :users
   get 'welcome/:user_name', to: 'users#welcome'
   resources :cities
+  resources :sessions
 end

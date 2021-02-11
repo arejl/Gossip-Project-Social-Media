@@ -27,8 +27,13 @@
             <%= link_to "Contact", contact_path, class: "nav-item nav-link"%>
           </div>
           <div class="navbar-nav ml-auto">
+          <% if session[:user_id]==nil %>
             <%= link_to "S'inscrire", new_user_path, class: "btn btn-secondary mx-1 my-1"%>
-            <%= link_to "Se connecter", root_path, class: "btn btn-primary mx-1 my-1"%>
+            <%= link_to "Se connecter", new_session_path, class: "btn btn-primary mx-1 my-1"%>
+          <%else%>
+            <%= link_to "Voir mon profil", user_path(id:session[:user_id]), class: "btn btn-secondary mx-1 my-1"%>
+            <%= link_to "Se déconnecter", session_path(session.id), method: :delete, class: "btn btn-danger mx-1 my-1" %>
+          <%end%>
           </div>
         </div>
       </nav>

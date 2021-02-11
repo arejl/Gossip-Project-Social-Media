@@ -1,12 +1,17 @@
 class CommentsController < ApplicationController
-  def create    
-    @comment = Comment.new(content:params[:comment_content], gossip_id:params[:gossip_id], user_id:User.where(first_name:"anonymous").first.id)
-    if @comment.save
-      flash[:success] = "Commentaire ajouté" 
-      redirect_to(gossip_path(id:params[:gossip_id]))
+  def create
+    if session[:user_id]==nil
+      redirect_to new_session_path
     else
-      flash[:danger] = "Commentaire non valide"
-      redirect_to(gossip_path(id:params[:gossip_id]))
+      @user = User.find(session[:user_id])    
+      @comment = Comment.new(content:params[:comment_content], gossip_id:params[:gossip_id], user_id:@user.id)
+      if @comment.save
+        flash[:success] = "Commentaire ajouté" 
+        redirect_to(gossip_path(id:params[:gossip_id]))
+      else
+        flash[:danger] = "Commentaire non valide"
+        redirect_to(gossip_path(id:params[:gossip_id]))
+      end
     end
   end
 

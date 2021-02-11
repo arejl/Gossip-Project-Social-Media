@@ -1,7 +1,8 @@
 class GossipsController < ApplicationController
   def create
+    @user = User.find(session[:user_id])
     @all_tags = Tag.all
-    @gossip = Gossip.new(title:params[:title], content:params[:content], user_id:User.where(first_name:"anonymous").first.id)
+    @gossip = Gossip.new(title:params[:title], content:params[:content], user_id:@user.id)
     if @gossip.save
       if !params[:tags].nil?
         params[:tags].each do |tag_id|
@@ -13,19 +14,29 @@ class GossipsController < ApplicationController
       render :new   
     end
   end
+
   def destroy
     @gossip = Gossip.find(params[:id])
     @gossip.destroy
     redirect_to(root_path)
   end
+
   def edit
     @all_tags = Tag.all
     @gossip = Gossip.find(params[:id])
   end
+
   def new
-    @gossip = Gossip.new
-    @all_tags = Tag.all
+    if session[:user_id]==nil
+      redirect_to new_session_path
+    else
+      id = session[:user_id]
+      @user = User.find(id)
+      @gossip = Gossip.new
+      @all_tags = Tag.all
+    end
   end
+
   def update
     @all_tags = Tag.all
     @gossip = Gossip.find(params[:id])
@@ -42,10 +53,13 @@ class GossipsController < ApplicationController
       render :edit
     end
   end
+
   def show
     @gossip_id = Gossip.find(params[:id].to_i)
   end
+
   private
+  
   def define_tags
   end
 end

@@ -19,8 +19,15 @@
             <%= label_tag 'Votre nom :'%>
             <%= text_field_tag :last_name, nil, class: "w-100" %>
             <br /><br />
+            <%= label_tag "Quel âge avez-vous ?"%>
+            <br/>
+            <%= number_field_tag :age, 15, {min: 15, max:80, class: "w-25"} %> ans
+            <br /><br />
             <%= label_tag "D'où venez-vous ?"%>
             <%= text_field_tag :city_name, nil, class: "w-100" %>
+            <br /><br />
+            <%= label_tag "Ecrivez une courte description de vous."%>
+            <%= text_area_tag :description, nil, placeholder:"J'adore les ragots et regarder Affaire Conclue sur France 2", rows:"5", class: "w-100" %>
             <br /><br />
             <%= label_tag 'Votre e-mail :'%>
             <%= text_field_tag :email, nil, class: "w-100" %>
