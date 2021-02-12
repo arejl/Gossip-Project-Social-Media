@@ -5,6 +5,7 @@ ruby '2.7.1'
 
 gem 'faker'
 gem 'table_print'
+gem 'invisible_captcha'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1.1'

@@ -1,4 +1,7 @@
 class GossipsController < ApplicationController
+
+  invisible_captcha only: [:create]
+
   def create
     @user = current_user
     @all_tags = Tag.all
